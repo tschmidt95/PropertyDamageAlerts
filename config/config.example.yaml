@@ -1,0 +1,88 @@
+# -------------------------------------------------------------------
+# PropertyDamageAlerts – Example Configuration
+# Copy this file to config/config.yaml and fill in your values.
+# -------------------------------------------------------------------
+
+# ── Data Sources ────────────────────────────────────────────────────
+sources:
+  # Each source has a name, type, and a list of feed URLs.
+  # Supported types: rss
+  - name: "Local Police Blotter"
+    type: rss
+    enabled: true
+    urls:
+      - "https://example.com/police/feed.rss"
+    # Optional request interval in seconds (default: 300)
+    poll_interval: 300
+
+  - name: "City Fire Department"
+    type: rss
+    enabled: true
+    urls:
+      - "https://example.com/fire/feed.rss"
+    poll_interval: 300
+
+  - name: "Local News"
+    type: rss
+    enabled: true
+    urls:
+      - "https://example.com/news/feed.rss"
+    poll_interval: 600
+
+# ── Filtering ────────────────────────────────────────────────────────
+filter:
+  # Keywords that must appear in an incident title or summary to be
+  # considered a property-damage event.
+  damage_keywords:
+    - fire
+    - flood
+    - storm damage
+    - structural damage
+    - explosion
+    - collapse
+    - burst pipe
+    - water damage
+    - vandalism
+    - break-in
+    - arson
+    - tornado
+    - hurricane
+    - hail
+    - wind damage
+    - smoke damage
+    - mold
+    - sewage
+
+  # If set, only incidents matching one of these geographic terms
+  # (city, zip, county) will be processed.  Leave empty to accept all.
+  locations: []
+
+# ── Alerts ───────────────────────────────────────────────────────────
+alerts:
+  email:
+    enabled: false
+    smtp_host: "smtp.gmail.com"
+    smtp_port: 587
+    use_tls: true
+    username: "your-email@gmail.com"
+    # Store the password in an environment variable: PDA_EMAIL_PASSWORD
+    password_env: "PDA_EMAIL_PASSWORD"
+    from_address: "your-email@gmail.com"
+    to_addresses:
+      - "recipient@example.com"
+
+  webhook:
+    enabled: false
+    # POST a JSON payload to each URL when an incident is detected.
+    urls:
+      - "https://hooks.example.com/property-damage"
+
+# ── Storage ──────────────────────────────────────────────────────────
+storage:
+  # Path to the SQLite database file (relative to project root).
+  db_path: "data/incidents.db"
+
+# ── Logging ──────────────────────────────────────────────────────────
+logging:
+  level: "INFO"          # DEBUG | INFO | WARNING | ERROR
+  log_file: "logs/pda.log"
